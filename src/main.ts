@@ -3,12 +3,14 @@ import { createCustomElement } from '@angular/elements';
 import { RegistrationComponent } from './app/registration/registration.component';
 import { NgZone } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 (async () => {
 
   const app = await createApplication({
     providers: [
-      provideHttpClient()
+      provideHttpClient(),
+      provideAnimations(),
     ],
   });
 

@@ -1,6 +1,6 @@
 @if (participation$ | async; as participation) {
     <div id="participation-{{divid}}>" class="participation_buttons">
-        @if (participation == yes()) {
+        @if (participation == Participation.Yes) {
             Sie nehmen teil!
         } @else {
             <button class="participation_button tribe-common-c-btn" type="button" (click)="participate()">Teilnehmen</button>
@@ -10,19 +10,9 @@
         @if (participation == no()) {
             Sie haben abgesagt!
         } @else {
-            <button class="participation_button tribe-common-c-btn" type="button" (click)="showPopup = true;">Absagen</button>
+            <button class="participation_button tribe-common-c-btn" type="button" (click)="openDialog()">Absagen</button>
         }
     </div>
 } @else {
     Lädt...
-}
-
-@if (showPopup) {
-    <div id="popup-{{divid}}" class="overlay">
-        <div id="event-name-{{divid}}"><b>{{title}}</b></div><div>{{schedule_details}}</div><div>Grund</div>
-        <textarea class="reason_area" id="reason-{{divid}}" cols="50" rows="3" [(ngModel)]="reason"></textarea>
-        <div class="note" id="note-{{divid}}"></div>
-        <button class="tribe-common-c-btn cancel-button" (click)="cancel()">Absagen</button>
-        <button class="tribe-common-c-btn close-button" (click)="showPopup = false;">X</button>
-    </div>
 }

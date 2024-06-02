@@ -1,25 +1,25 @@
-import { Component, Input } from '@angular/core';
-import { Observable, Subject, merge } from 'rxjs';
-import { DataService, Participation } from '../data.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {Subject} from 'rxjs';
+import {DataService, Participation} from '../data.service';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Dialog, DialogModule} from '@angular/cdk/dialog';
+import {DeclineDialogComponent} from "../decline-dialog/decline-dialog.component";
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule,DialogModule],
   templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+  styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
   @Input() divid = '';
   @Input() title = '';
   @Input() schedule_details = '';
   participation$!: Subject<Participation>;
-  showPopup = false;
-  reason = '';
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, public dialog: Dialog) {}
 
   ngOnInit(): void {
     this.participation$ = new Subject<Participation>();
@@ -27,20 +27,37 @@ export class RegistrationComponent {
     this.participation$.subscribe(c => console.log(c));
   }
 
-  yes(): Participation {
-    return Participation.Yes;
-  }
-
   no(): Participation {
     return Participation.No;
   }
 
   participate() {
-    this.dataService.update_participation(this.divid, this.yes(), '').subscribe(r => this.participation$.next(r));
+    this.dataService.update_participation(this.divid, Participation.Yes, '').subscribe(r => this.participation$.next(r));
   }
 
-  cancel() {
-    this.dataService.update_participation(this.divid, this.no(), this.reason).subscribe(r => this.participation$.next(r));
-    this.showPopup = false;
+  declineParticipation(reason: string): void {
+    this.dataService.update_participation(this.divid, Participation.No, reason).subscribe(r => this.participation$.next(r));
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open<string>(DeclineDialogComponent, {
+      minWidth: '500px',
+      panelClass: 'tribe-common',
+      data: {
+        divid: this.divid,
+        title: this.title,
+        schedule_details: this.schedule_details,
+      }
+    });
+    dialogRef.closed.subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      if (result) {
+        this.declineParticipation(result);
+      }
+    });
+  }
+
+  protected readonly open = open;
+  protected readonly Participation = Participation;
 }

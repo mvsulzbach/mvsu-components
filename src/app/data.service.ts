@@ -8,7 +8,7 @@ export enum Participation {
   No = 0,
   Yes = 1,
   Undefined = 2
-};
+}
 
 class ParticipationUpdate {
   participation: Participation;

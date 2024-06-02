@@ -1,0 +1,7 @@
+<div id="popup-{{data.divid}} tribe-common" class="overlay">
+  <div id="event-name-{{data.divid}}"><b>{{data.title}}</b></div><div>{{data.schedule_details}}</div><div>Absage-Grund</div>
+  <textarea class="reason_area" id="reason-{{data.divid}}" cols="40" rows="3" [(ngModel)]="reason"></textarea>
+  <div class="note" id="note-{{data.divid}}"></div>
+  <button class="tribe-common-c-btn cancel-button" (click)="dialogRef.close(reason)">Absagen</button>
+  <button class="tribe-common-c-btn close-button" (click)="dialogRef.close()">X</button>
+</div>
