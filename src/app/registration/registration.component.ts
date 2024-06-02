@@ -24,7 +24,6 @@ export class RegistrationComponent {
   ngOnInit(): void {
     this.participation$ = new Subject<Participation>();
     this.dataService.get_participation(this.divid).subscribe(r => this.participation$.next(r));
-    this.participation$.subscribe(c => console.log(c));
   }
 
   no(): Participation {
@@ -50,8 +49,6 @@ export class RegistrationComponent {
       }
     });
     dialogRef.closed.subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result);
       if (result) {
         this.declineParticipation(result);
       }
