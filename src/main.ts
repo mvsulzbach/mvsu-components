@@ -1,6 +1,23 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import { createApplication } from '@angular/platform-browser';
+import { createCustomElement } from '@angular/elements';
+import { RegistrationComponent } from './app/registration/registration.component';
+import { NgZone } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+(async () => {
+
+  const app = await createApplication({
+    providers: [
+      provideHttpClient()
+    ],
+  });
+
+  const registerElement = createCustomElement(RegistrationComponent, {
+    injector: app.injector,
+  });
+
+  app.injector.get(NgZone).run(() => {
+    customElements.define('mvsu-registration', registerElement)
+  });
+
+})();
