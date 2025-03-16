@@ -4,6 +4,7 @@ import { RegistrationComponent } from './app/registration/registration.component
 import { NgZone } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import {provideAnimations} from "@angular/platform-browser/animations";
+import {ParticipatingMembersComponent} from "./app/participating-members/participating-members.component";
 
 (async () => {
 
@@ -18,8 +19,13 @@ import {provideAnimations} from "@angular/platform-browser/animations";
     injector: app.injector,
   });
 
+  const membersElement = createCustomElement(ParticipatingMembersComponent, {
+    injector: app.injector,
+  });
+
   app.injector.get(NgZone).run(() => {
     customElements.define('mvsu-registration', registerElement)
+    customElements.define('mvsu-participating-members', membersElement)
   });
 
 })();

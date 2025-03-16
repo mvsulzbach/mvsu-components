@@ -1,0 +1,4 @@
+.loader {
+  background-color: var(--tec-color-background-transparent);
+  z-index: var(--tec-z-index-spinner-container);
+}

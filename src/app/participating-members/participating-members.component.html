@@ -1,0 +1,45 @@
+<div class="participation_stats">
+@if (members()) {
+
+  <div class="participation_stat_text">Anmeldungen: {{members()[1]}}</div>
+  <div class="participation_stat_text">Absagen: {{members()[2]}}</div>
+
+  <div class="collapseomatic" id="participating_members_collapse_header" title="Details" data-findme="target">Details</div>
+  <div id="target-participating_members_collapse_header" style="display: none;" class="collapseomatic_content">
+
+    <table>
+      <tbody>
+        @for (register of members()[0].keys(); track register) {
+          <tr>
+            <td style="width: 25%;">{{register}}</td>
+            <td>
+              @for (member of members()[0].get(register); track member.uid; let last = $last) {
+
+                <span class="participate"
+                      [class.participate-yes]="member.participation == yes()" [class.participate-no]="member.participation == no()"
+                      cdkOverlayOrigin #trigger="cdkOverlayOrigin"
+                      (mouseover)="member.isOpen = member.participation == no()"
+                      (mouseout)="member.isOpen = false"
+                >{{member.display_name}}@if (!last) {, }</span>
+
+                <ng-template
+                  cdkConnectedOverlay
+                  [cdkConnectedOverlayOrigin]="trigger"
+                  [cdkConnectedOverlayOpen]="member.isOpen"
+                >
+                  <span class="reason-overlay">
+                    {{member.reason}}
+                  </span>
+                </ng-template>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+} @else {
+  Lädt ...
+}
+</div>

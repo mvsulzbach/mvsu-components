@@ -1,29 +1,30 @@
-import {Component, Input} from '@angular/core';
-import {Subject} from 'rxjs';
-import {DataService, Participation} from '../data.service';
+import {Component, inject, input, linkedSignal, OnInit, signal} from '@angular/core';
+import {DataService, Participation, asParticipation} from '../data.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Dialog, DialogModule} from '@angular/cdk/dialog';
 import {DeclineDialogComponent} from "../decline-dialog/decline-dialog.component";
 
 @Component({
-  selector: 'app-registration',
-  standalone: true,
-  imports: [CommonModule,FormsModule,DialogModule],
-  templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css',
+    selector: 'app-registration',
+    imports: [CommonModule, FormsModule, DialogModule],
+    templateUrl: './registration.component.html',
+    styleUrl: './registration.component.css'
 })
 export class RegistrationComponent {
-  @Input() divid = '';
-  @Input() title = '';
-  @Input() schedule_details = '';
-  participation$!: Subject<Participation>;
+  dataService = inject(DataService);
+  dialog = inject(Dialog);
 
-  constructor(private dataService: DataService, public dialog: Dialog) {}
+  divid = input<string>();
+  title = input<string>();
+  schedule_details = input<string>();
+  initial = input<number>();
+  participation = linkedSignal<Participation>(() => asParticipation(this.initial()));
+  loading = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.participation$ = new Subject<Participation>();
-    this.dataService.get_participation(this.divid).subscribe(r => this.participation$.next(r));
+
+  yes(): Participation {
+    return Participation.Yes;
   }
 
   no(): Participation {
@@ -31,11 +32,13 @@ export class RegistrationComponent {
   }
 
   participate() {
-    this.dataService.update_participation(this.divid, Participation.Yes, '').subscribe(r => this.participation$.next(r));
+    this.loading.set(true);
+    this.dataService.update_participation(this.divid(), Participation.Yes, '').subscribe(value => this.participation.set(value));
   }
 
   declineParticipation(reason: string): void {
-    this.dataService.update_participation(this.divid, Participation.No, reason).subscribe(r => this.participation$.next(r));
+    this.loading.set(true);
+    this.dataService.update_participation(this.divid(), Participation.No, reason).subscribe(value => this.participation.set(value));
   }
 
   openDialog(): void {
@@ -43,9 +46,9 @@ export class RegistrationComponent {
       minWidth: '500px',
       panelClass: 'tribe-common',
       data: {
-        divid: this.divid,
-        title: this.title,
-        schedule_details: this.schedule_details,
+        divid: this.divid(),
+        title: this.title(),
+        schedule_details: this.schedule_details(),
       }
     });
     dialogRef.closed.subscribe(result => {
@@ -56,5 +59,4 @@ export class RegistrationComponent {
   }
 
   protected readonly open = open;
-  protected readonly Participation = Participation;
 }

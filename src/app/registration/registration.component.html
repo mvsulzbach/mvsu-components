@@ -1,18 +1,33 @@
-@if (participation$ | async; as participation) {
-    <div id="participation-{{divid}}>" class="participation_buttons">
-        @if (participation == Participation.Yes) {
-            Sie nehmen teil!
-        } @else {
-            <button class="participation_button tribe-common-c-btn" type="button" (click)="participate()">Teilnehmen</button>
-        }
+@if (loading()) {
+  <div
+    class="tribe-events-view-loader"
+    role="alert"
+    aria-live="polite"
+  >
+    <div class="tribe-events-view-loader__dots tribe-common-c-loader">
+      <svg class="tribe-common-c-svgicon tribe-common-c-svgicon--dot tribe-common-c-loader__dot tribe-common-c-loader__dot--first" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5"></circle></svg>
+      <svg class="tribe-common-c-svgicon tribe-common-c-svgicon--dot tribe-common-c-loader__dot tribe-common-c-loader__dot--second" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5"></circle></svg>
+      <svg class="tribe-common-c-svgicon tribe-common-c-svgicon--dot tribe-common-c-loader__dot tribe-common-c-loader__dot--third" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5"></circle></svg>
     </div>
-    <div id="cancel-{{divid}}" class="cancel_buttons">
-        @if (participation == no()) {
-            Sie haben abgesagt!
-        } @else {
-            <button class="participation_button tribe-common-c-btn" type="button" (click)="openDialog()">Absagen</button>
-        }
-    </div>
-} @else {
-    Lädt...
+  </div>
 }
+<div class="loader">
+  @if (participation() !== undefined) {
+      <div id="participation-{{divid()}}>" class="participation_buttons">
+          @if (participation() === yes()) {
+              Sie nehmen teil!
+          } @else {
+              <button class="participation_button tribe-common-c-btn" type="button" (click)="participate()">Teilnehmen</button>
+          }
+      </div>
+      <div id="cancel-{{divid()}}" class="cancel_buttons">
+          @if (participation() === no()) {
+              Sie haben abgesagt!
+          } @else {
+              <button class="participation_button tribe-common-c-btn" type="button" (click)="openDialog()">Absagen</button>
+          }
+      </div>
+  } @else {
+    Lädt...
+  }
+</div>

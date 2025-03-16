@@ -1,0 +1,28 @@
+.participate.participate-yes {
+  color: green;
+}
+.participate.participate-no {
+  color: red;
+}
+.participate {
+  color: grey;
+}
+
+.reason-overlay {
+  width: 100px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  background: #fff;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+}
+
+#participating_members_collapse_header {
+  border-bottom: none;
+  margin-top: 1em;
+}
+
+.participation_stats {
+  margin-bottom: 3em;
+}
