@@ -1,23 +1,21 @@
-import {Component, HostListener, Input, signal} from '@angular/core';
-import {Subject} from "rxjs";
+import {Component, Input, OnInit, signal} from '@angular/core';
 import {DataService, Member, Participation} from "../data.service";
 import {CommonModule} from "@angular/common";
 import {OverlayModule} from "@angular/cdk/overlay";
-import {CdkAccordion, CdkAccordionItem} from "@angular/cdk/accordion";
 
 @Component({
     selector: 'app-participating-members',
-    imports: [CommonModule, OverlayModule, CdkAccordion, CdkAccordionItem],
+    imports: [CommonModule, OverlayModule],
     templateUrl: './participating-members.component.html',
     styleUrl: './participating-members.component.css'
 })
-export class ParticipatingMembersComponent {
+export class ParticipatingMembersComponent implements OnInit {
   @Input() divid = '';
   members = signal<[Map<string,Member[]>, number, number]>(undefined);
 
   constructor(private dataService: DataService) {}
 
-  groupBy<K,V>(list: Array<V>, keyGetter: (input: V) => K): Map<K, Array<V>> {
+  groupBy<K,V>(list: V[], keyGetter: (input: V) => K): Map<K, V[]> {
     const map = new Map();
     Array.from(list).forEach((item) => {
       const key = keyGetter(item);

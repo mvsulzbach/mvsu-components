@@ -16,10 +16,10 @@
               @for (member of members()[0].get(register); track member.uid; let last = $last) {
 
                 <span class="participate"
-                      [class.participate-yes]="member.participation == yes()" [class.participate-no]="member.participation == no()"
+                      [class.participate-yes]="member.participation === yes()" [class.participate-no]="member.participation === no()"
                       cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-                      (mouseover)="member.isOpen = member.participation == no()"
-                      (mouseout)="member.isOpen = false"
+                      (mouseover)="member.isOpen = member.participation === no()" (focus)="member.isOpen = member.participation === no()"
+                      (mouseout)="member.isOpen = false" (blur)="member.isOpen = false"
                 >{{member.display_name}}@if (!last) {, }</span>
 
                 <ng-template

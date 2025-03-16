@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {map, Observable} from 'rxjs';
 
-declare var mvsuSettings: any;
+declare let mvsuSettings: any;
 
 export enum Participation {
   No = 0,
@@ -20,7 +20,7 @@ export class Member {
   reason: string;
   register: string;
   display_name: string;
-  isOpen: boolean = false;
+  isOpen = false;
 
   constructor(uid: number, participation: Participation, reason: string, register: string, display_name: string) {
     this.uid = uid;

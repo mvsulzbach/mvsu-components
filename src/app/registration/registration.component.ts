@@ -1,4 +1,4 @@
-import {Component, inject, input, linkedSignal, OnInit, signal} from '@angular/core';
+import {Component, inject, input, linkedSignal, signal} from '@angular/core';
 import {DataService, Participation, asParticipation} from '../data.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
